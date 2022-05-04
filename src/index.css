@@ -8,6 +8,8 @@ html {
 }
 body {
     font-family: 'Nunito', 'Arial', 'Helvetica', sans-serif;
+    background-image: url('/public/assets/fon2.jpg') ;
+    
 }
 
 .appContainer {
