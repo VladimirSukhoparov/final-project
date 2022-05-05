@@ -21,9 +21,9 @@ body {
 }
 
 .container {
-    max-width: 1024px;
-    padding-left: 16px;
-    padding-right: 16px;
+    max-width: 1200px;
+    padding-left: 0px;
+    padding-right: 0px;
     width: 95%;
     margin: 0 auto;
 ;
