@@ -6,6 +6,7 @@ import { List } from './components/List'
 import ModalContext from './contexts/modalContext'
 import { Route, Routes } from 'react-router-dom'
 import { Post } from './components/Post'
+import { Header } from './components/Header'
 
 export const App = () => {
     const [postList, setPostList] = useState([])
@@ -36,9 +37,11 @@ export const App = () => {
     const currentPosts = postList.slice(indexOfFirstPost, indexOfLastPost)
 
     return (
+        
         <ModalContext.Provider value={{ modalState, setModalState }}>
             <div className='appContainer'>
                 <div className='content container'>
+                <Header></Header>
                 <Routes>
                 <Route path='/'
                                 element={
