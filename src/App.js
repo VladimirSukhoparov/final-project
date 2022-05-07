@@ -7,6 +7,8 @@ import ModalContext from "./contexts/modalContext";
 import { Route, Routes } from "react-router-dom";
 import { Post } from "./components/Post";
 import { CustomizedButton as Button } from "./components/Button/Button";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 export const App = () => {
   const [postList, setPostList] = useState([]);
@@ -44,7 +46,7 @@ export const App = () => {
     <ModalContext.Provider value={{ modalState, setModalState }}>
       <div className="appContainer">
         <Button changeList={setPostList} />
-
+        <Header></Header>
         <div className="content container">
           <Routes>
             <Route
@@ -71,6 +73,8 @@ export const App = () => {
             />
           </Routes>
         </div>
+
+        <Footer></Footer>
       </div>
     </ModalContext.Provider>
   );

@@ -1,0 +1,21 @@
+.header {
+  font-family: "Barlow Condensed", sans-serif;
+  font-family: "League Gothic", sans-serif;
+  font-family: "Patrick Hand", cursive;
+  font-family: "Tapestry", cursive;
+}
+.subheaderTop {
+  display: flex;
+  justify-content: space-between;
+}
+.subheaderBottom {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+.title {
+  font-size: 45px;
+}
+.subheaderTop img {
+    width: 50%;
+}
