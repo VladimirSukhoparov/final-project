@@ -49,17 +49,17 @@ export const App = () => {
     <ModalContext.Provider value={{ modalState, setModalState }}>
       <div className="appContainer">
 
-       
+     
         
       <Header>
-      <Button changeList={setPostList} />
       <Logo />
       <Search setPostList={setPostList}/>
-
+      <Button changeList={setPostList} />
       <HeaderLinks/>
       </Header>
-
-        <div className="content container">
+     
+     
+      <div className="content container">
           <Routes>
             <Route
               path="/"
@@ -85,9 +85,9 @@ export const App = () => {
             />
           </Routes>
         </div>
-
+</div>
         <Footer></Footer>
-      </div>
+      
     </ModalContext.Provider>
   );
 };

@@ -18,6 +18,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   backgroundColor: pink[300],
   "&:hover": {
     backgroundColor: blue[300],
+    
   },
 }));
 
@@ -54,7 +55,7 @@ export const CustomizedButton = ({ changeList }) => {
   };
 
   const styleBtn = {
-    position: "fixed",
+    position: "fixed"
   };
 
   return (
