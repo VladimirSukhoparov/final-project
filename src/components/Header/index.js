@@ -5,12 +5,11 @@ export const Header = () => {
     <header className={style.header}>
       <div className={style.subheaderTop}>
         <div>
-          <img src="https://img.icons8.com/ios-filled/150/000000/old-vmware-logo.png" />
         </div>
         <div className={style.title}>Fancy Posts</div>
-        <div>Authorization</div>
+        <div>Amet ea ea amet consequat cillum ullamco id.</div>
       </div>
-      <div className={style.subheaderBottom}> Поиск</div>
+      <div className={style.subheaderBottom}> Amet id occaecat in enim ipsum labore fugiat deserunt.</div>
     </header>
   );
 };
