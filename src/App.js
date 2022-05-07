@@ -48,27 +48,44 @@ export const App = () => {
   return (
     <ModalContext.Provider value={{ modalState, setModalState }}>
       <div className="appContainer">
-        <><Button changeList={setPostList} />
-        <Header></Header><div className="content container">
-      <Routes>
-        <Route
-          path="/"
-          element={<>
-            <List
-              list={currentPosts}
-              favorites={favorites}
-              setFavorites={setFavorites} />
-            <PaginationRounded
-              postsPerPage={postsPerPage}
-              totalPosts={postList.length}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage} />
-          </>} />
-        <Route
-          path="posts/:itemID"
-          element={<Post user={user?._id} changeList={setPostList} />} />
-      </Routes>
-    </div><Footer></Footer></>
+
+        <Button changeList={setPostList} />
+        
+      <Header>
+      <Logo />
+      <Search setPostList={setPostList}/>
+
+      <HeaderLinks/>
+      </Header>
+
+        <div className="content container">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <List
+                    list={currentPosts}
+                    favorites={favorites}
+                    setFavorites={setFavorites}
+                  />
+                  <PaginationRounded
+                    postsPerPage={postsPerPage}
+                    totalPosts={postList.length}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </>
+              }
+            />
+            <Route
+              path="posts/:itemID"
+              element={<Post user={user?._id} changeList={setPostList} />}
+            />
+          </Routes>
+        </div>
+
+        <Footer></Footer>
       </div>
     </ModalContext.Provider>
   );
