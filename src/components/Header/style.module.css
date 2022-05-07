@@ -4,6 +4,7 @@
 	padding: 12px 0;
 	margin-bottom: 30px;
 	
+	
 }
 
 .header__wrapper {
@@ -11,6 +12,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 80px;
+
 }
 
 @media (max-width: 700px) {
