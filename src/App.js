@@ -6,6 +6,7 @@ import { List } from "./components/List";
 import ModalContext from "./contexts/modalContext";
 import { Route, Routes } from "react-router-dom";
 import { Post } from "./components/Post";
+import { CustomizedButton as Button } from "./components/Button/Button";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { Search } from "./components/Search";
@@ -47,14 +48,17 @@ export const App = () => {
   return (
     <ModalContext.Provider value={{ modalState, setModalState }}>
       <div className="appContainer">
+
+        <Button changeList={setPostList} />
+        
       <Header>
       <Logo />
       <Search setPostList={setPostList}/>
 
       <HeaderLinks/>
       </Header>
+
         <div className="content container">
-          
           <Routes>
             <Route
               path="/"
@@ -80,6 +84,7 @@ export const App = () => {
             />
           </Routes>
         </div>
+
         <Footer></Footer>
       </div>
     </ModalContext.Provider>
