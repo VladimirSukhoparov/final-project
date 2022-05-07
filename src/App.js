@@ -47,6 +47,7 @@ export const App = () => {
 
   return (
     <ModalContext.Provider value={{ modalState, setModalState }}>
+      <Button changeList={setPostList} />
       <div className="appContainer">
 
      
@@ -54,8 +55,9 @@ export const App = () => {
       <Header>
       <Logo />
       <Search setPostList={setPostList}/>
-      <Button changeList={setPostList} />
+      
       <HeaderLinks/>
+     
       </Header>
      
      
