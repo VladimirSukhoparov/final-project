@@ -1,36 +1,41 @@
-import React, { useState } from 'react'
-import api from '../../utils/api'
+import React, { useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
+
+import ModalContext from '../../contexts/modalContext'
+
+import { useApi } from '../../hooks/useApi'
+
 import { Card as CardMUI } from '@mui/material'
 import { Typography } from '@mui/material'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
+import Divider from '@mui/material/Divider'
 import { pink } from '@mui/material/colors'
 import IconButton from '@mui/material/IconButton'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import ListItemText from '@mui/material/ListItemText'
-import style from './index.module.css'
 import CommentIcon from '@mui/icons-material/Comment'
+
 import dayjs from 'dayjs'
-import { Link } from 'react-router-dom'
+
+import style from './index.module.css'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
+
+const divStyle = {
+    padding: '13px',
+    color: '#1976d2',
+    fontSize: '16px',
+}
 
 export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
+    const api= useApi()
     const [newLike, setNewLike] = useState(itemPost.likes.length)
+    const {setModalState} = useContext(ModalContext)
+    const { writeLS, removeLS } = useLocalStorage()
 
-    const writeLS = (key, value) => {
-        const storage = JSON.parse(localStorage.getItem(key)) || []
-        storage.push(value)
-
-        localStorage.setItem(key, JSON.stringify(storage))
-    }
-
-    const removeLS = (key, value) => {
-        const storage = JSON.parse(localStorage.getItem(key))
-        const filteredStorage = storage.filter((itemID) => value !== itemID)
-        localStorage.setItem(key, JSON.stringify(filteredStorage))
-    }
-
+    
     const addFavorite = () => {
         writeLS('favorites', itemPost._id)
         setFavorites((prevState) => [...prevState, itemPost._id])
@@ -40,7 +45,12 @@ export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
                 setNewLike(addedItem.likes.length)
             })
             .catch(() => {
-                alert('Не удалось поставить лайк')
+                setModalState(() => {
+                    return {
+                        isOpen: true,
+                        msg: 'Не удалось поставить лайк',
+                    }
+                })
             })
     }
 
@@ -52,7 +62,12 @@ export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
                 setNewLike(removedItem.likes.length)
             })
             .catch(() => {
-                alert('Не удалось удалить лайк')
+                setModalState(() => {
+                    return {
+                        isOpen: true,
+                        msg: 'Не удалось удалить лайк'
+                    }
+                })
             })
     }
 
@@ -70,9 +85,11 @@ export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
                     <ListItem>
                         <Link to={`posts/${itemPost._id}`}>{itemPost.title}</Link>
                     </ListItem>
+                    <Divider />
                     <ListItem sx={{ alignItems: 'flex-start' }}>
                         <p className={style.p}> {itemPost.text}</p>
                     </ListItem>
+                    <Divider />
                     <ListItem>
                         <Typography gutterBottom variant='body2' component='div'>
                             Tags:

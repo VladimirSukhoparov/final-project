@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import style from './index.module.css';
 
-import api from "../../utils/api";
+import { useApi } from '../../hooks/useApi'
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -12,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { pink, blue } from "@mui/material/colors";
+import ModalContext from '../../contexts/modalContext'
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(pink[800]),
@@ -23,7 +25,9 @@ const ColorButton = styled(Button)(({ theme }) => ({
 }));
 
 export const CustomizedButton = ({ changeList }) => {
+  const api= useApi()
   const [open, setOpen] = useState(false);
+  const {setModalState} = useContext(ModalContext)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -59,7 +63,7 @@ export const CustomizedButton = ({ changeList }) => {
   };
 
   return (
-    <Stack spacing={2} direction="row" style={styleBtn}>
+    <Stack spacing={2} direction="row" style={styleBtn} className={style.btn}>
       <ColorButton variant="contained" onClick={handleClickOpen}>
         New Post
       </ColorButton>

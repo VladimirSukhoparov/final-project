@@ -19,6 +19,17 @@ class Api {
         }).then(onResponse)
     }
 
+    editAvatarUser(updateAvatar) {
+        return fetch(`${this._url}/users/me/avatar`, {
+            method: 'PATCH',
+            headers: {
+                authorization: `Bearer ${this._token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updateAvatar),
+        }).then(onResponse);
+    }
+
     addPost(post) {
         return fetch(`${this._url}/posts`, {
             method: 'POST',
@@ -39,7 +50,7 @@ class Api {
         }).then(onResponse)
     }
 
-    getCurrentUser() {
+    getInfoUser() {
         return fetch(`${this._url}/users/me`, {
             headers: {
                 authorization: `Bearer ${this._token}`,
@@ -47,14 +58,15 @@ class Api {
         }).then(onResponse)
     }
 
-    getUserById(userID) {
-        const requestUrl = userID ? `${this._url}/users/${userID}` : `${this._url}/users/`
-        return fetch(requestUrl, {
-            method: 'GET',
+    editCurentUser(updatedUserInfo) {
+        return fetch(`${this._url}/users/me`, {
+            method: 'PATCH',
             headers: {
                 authorization: `Bearer ${this._token}`,
+                'Content-Type': 'application/json',
             },
-        }).then(onResponse)
+            body: JSON.stringify(updatedUserInfo),
+        }).then(onResponse);
     }
 
     addLike(itemID) {
@@ -80,6 +92,17 @@ class Api {
             headers: {
                 authorization: `Bearer ${this._token}`,
             },
+        }).then(onResponse)
+    }
+
+    editPost(itemID, editItem) {
+        return fetch(`${this._url}/posts/${itemID}`, {
+            method: 'PATCH',
+            headers: {
+                authorization: `Bearer ${this._token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editItem),
         }).then(onResponse)
     }
 
@@ -110,6 +133,26 @@ class Api {
           },
       }).then(onResponse)
   }
+  
+  signUp(userData) {
+      return fetch(`${this._url}/signup`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        }).then(onResponse);
+    }
+    
+    signIn(userData) {
+        return fetch(`${this._url}/signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        }).then(onResponse);
+    }
 }
 
-export default new Api(config)
+export default Api
