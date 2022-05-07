@@ -1,23 +1,17 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import './index.css'
-import api from '../../utils/api'
-import ModalContext from '../../contexts/modalContext'
+import { useApi } from '../../hooks/useApi'
 
-export const Search = ({ setPostList }) => {
+export const Search = ({ setPostList, token }) => {
+    const api = useApi()
     const [searchText, setSearchText] = useState('')
-    const { setModalState } = useContext(ModalContext)
+
 
     useEffect(() => {
-        api.getPosts()
+        if(token){
+        api.getPost()
             .then((list) => setPostList(list.filter((item) => item.title.toLowerCase().includes(searchText.toLowerCase()))))
-            .catch((err) => 
-                setModalState(() => {
-                    return {
-                        isOpen: true,
-                        msg: err,
-                    }
-                })
-            )
+            .catch((err) => alert(err))}
     }, [searchText])
 
     return (

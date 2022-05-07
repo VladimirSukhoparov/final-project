@@ -1,95 +1,116 @@
-import React, { useState, useEffect } from "react";
-import api from "./utils/api";
-import PaginationRounded from "./components/Pagination/Pagination";
-import "./index.css";
-import { List } from "./components/List";
-import ModalContext from "./contexts/modalContext";
-import { Route, Routes } from "react-router-dom";
-import { Post } from "./components/Post";
-import { CustomizedButton as Button } from "./components/Button/Button";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
-import { Search } from "./components/Search";
-import Logo from "./components/Logo";
-import { HeaderLinks } from "./components/HeaderLinks";
+import React, { useEffect, useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+
+import { useApi } from './hooks/useApi'
+import { Header } from './components/Header'
+import { Footer } from './components/Footer'
+import { List } from './components/List'
+import { InfoUser } from './components/InfoUser'
+import { HeaderLinks } from './components/HeaderLinks'
+import Logo from './components/Logo'
+
+import '@fontsource/roboto'
+import PaginationRounded from './components/Pagination/Pagination'
+import { Post } from './components/Post'
+
+import UserContext from './contexts/userContext'
+import ModalContext from './contexts/modalContext'
+import FormModalContext from './contexts/formModalContext';
+
+import './index.css'
+import AlertModal from './components/Modal'
+import { Search } from './components/Search'
+import { useLocalStorage } from './hooks/useLocalStorage'
+import { FormModal } from './components/FormModal'
+
+
+import { CustomizedButton as Button } from './components/Button/Button'
 
 export const App = () => {
-  const [postList, setPostList] = useState([]);
-  const [favorites, setFavorites] = useState(
-    JSON.parse(localStorage.getItem("favorites")) || []
-  );
-  const [modalState, setModalState] = useState({
-    isOpen: false,
-    msg: null,
+  const api=useApi()
+  const { readLS } = useLocalStorage()
+    const [postList, setPostList] = useState([])
+    const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('favorites')) || [])
+    const [modalState, setModalState] = useState({
+        isOpen: false,
+        msg: null,
+    })
+
+    const [modalFormState, setModalFormState] = useState({
+      isOpen: false,
+      msg: null,
   });
 
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    api
-      .getInfoUser()
-      .then((user) => setUser(user))
-      .catch((err) => alert(err));
-  }, []);
+    const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    api
-      .getPosts()
-      .then((res) => setPostList(res))
-      .catch((err) => alert(err));
-  }, []);
+    const token = readLS('token')
+    useEffect(()=>{
+        if(!token){
+            setModalFormState(()=>{
+                return{
+                    isOpen: true,
+                    msg: 'Вы не авторизированы',
+                }
+            })
+        }
+    },[])
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(15);
+    useEffect(() => {
+      if(token){
+        api.getPosts()
+            .then((list) => setPostList(list))
+            .catch((err) => alert(err))}
+    }, [user])
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = postList.slice(indexOfFirstPost, indexOfLastPost);
+    useEffect(() => {
+        if(token){
+              api.getInfoUser()
+            .then((user) => setUser(user))
+            .catch((err) => alert(err))}
 
-  return (
-    <ModalContext.Provider value={{ modalState, setModalState }}>
-      <Button changeList={setPostList} />
-      <div className="appContainer">
+    }, [])
 
-     
-        
-      <Header>
-      <Logo />
-      <Search setPostList={setPostList}/>
-      
-      <HeaderLinks/>
-     
-      </Header>
-     
-     
-      <div className="content container">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <List
-                    list={currentPosts}
-                    favorites={favorites}
-                    setFavorites={setFavorites}
-                  />
-                  <PaginationRounded
-                    postsPerPage={postsPerPage}
-                    totalPosts={postList.length}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                  />
-                </>
-              }
-            />
-            <Route
-              path="posts/:itemID"
-              element={<Post user={user?._id} changeList={setPostList} />}
-            />
-          </Routes>
-        </div>
-</div>
-        <Footer></Footer>
-      
-    </ModalContext.Provider>
-  );
-};
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [postsPerPage] = useState(15)
+
+    const indexOfLastPost = currentPage * postsPerPage
+    const indexOfFirstPost = indexOfLastPost - postsPerPage
+    const currentPosts = postList.slice(indexOfFirstPost, indexOfLastPost)
+
+    return (
+      <UserContext.Provider value={{ user, setUser }}>
+      <ModalContext.Provider value={{ modalState, setModalState }}>
+      <FormModalContext.Provider value={{ modalFormState, setModalFormState }}>
+      <FormModal />
+      <AlertModal />
+            <Button changeList={setPostList} />
+            <div className='appContainer'>
+                <Header>
+                    <Logo />
+                    <Search setPostList={setPostList} />
+                    <InfoUser token={token}/>
+                    <HeaderLinks />
+                </Header>
+
+                <div className='content container'>
+                    <Routes>
+                        <Route
+                            path='/'
+                            element={
+                                <>
+                                    <List list={currentPosts} favorites={favorites} setFavorites={setFavorites} />
+                                    <PaginationRounded postsPerPage={postsPerPage} totalPosts={postList.length} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                                </>
+                            }
+                        />
+                        <Route path='posts/:itemID' element={<Post user={user?._id} changeList={setPostList} />} />
+                    </Routes>
+                </div>
+                <Footer />
+            </div>
+            </FormModalContext.Provider>
+            </ModalContext.Provider>
+        </UserContext.Provider>
+    )
+}

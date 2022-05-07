@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import api from '../../utils/api'
+import { useApi } from '../../hooks/useApi'
 import ModalContext from '../../contexts/modalContext'
 
 import Grid from '@mui/material/Grid'
@@ -21,10 +21,11 @@ import SendIcon from '@mui/icons-material/Send'
 
 import dayjs from 'dayjs'
 
-import './index.css'
+import style from './index.module.css'
 
 
 export const Post = ({ user }, { changeList }) => {
+    const api = useApi()
     const { setModalState } = useContext(ModalContext)
     const [item, setItem] = useState(null)
     const params = useParams()
@@ -153,10 +154,10 @@ export const Post = ({ user }, { changeList }) => {
 
     const handleClickToEdit = () => {
         api.editPost(params.itemID, {
-            image: image,
-            title: title,
-            text: text,
-            tags: tags,
+            image: image.trim(),
+            title: title.trim(),
+            text: text.trim(),
+            tags: tags.trim().split(','),
         })
             .then((data) => {
                 setItem(data)
@@ -228,6 +229,7 @@ export const Post = ({ user }, { changeList }) => {
                                                     setImage(target.value)
                                                 }}
                                             />
+                                            
                                             <TextField
                                                 margin='dense'
                                                 name='inputTitle'
@@ -284,7 +286,7 @@ export const Post = ({ user }, { changeList }) => {
 
                                     <Typography gutterBottom variant='body2' component='div' sx={{ ml: 1, mr: 1 }}>
                                         {item.tags.map((item, i) => (
-                                            <span key={i} className='tags'>
+                                            <span key={i} className={style.tags}>
                                                 {item}
                                             </span>
                                         ))}
