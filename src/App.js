@@ -8,6 +8,9 @@ import { Route, Routes } from "react-router-dom";
 import { Post } from "./components/Post";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
+import { Search } from "./components/Search";
+import Logo from "./components/Logo";
+import { HeaderLinks } from "./components/HeaderLinks";
 
 export const App = () => {
   const [postList, setPostList] = useState([]);
@@ -44,7 +47,12 @@ export const App = () => {
   return (
     <ModalContext.Provider value={{ modalState, setModalState }}>
       <div className="appContainer">
-      <Header></Header>
+      <Header>
+      <Logo />
+      <Search setPostList={setPostList}/>
+
+      <HeaderLinks/>
+      </Header>
         <div className="content container">
           
           <Routes>
