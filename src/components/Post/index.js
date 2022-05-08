@@ -157,8 +157,8 @@ export const Post = ({ user }, { changeList }) => {
             image: image.trim(),
             title: title.trim(),
             text: text.trim(),
-            tags: tags.trim().split(','),
-        })
+            tags: tags,
+                    })
             .then((data) => {
                 setItem(data)
                 handleCloseEdit()
@@ -260,7 +260,7 @@ export const Post = ({ user }, { changeList }) => {
                                                 variant='standard'
                                                 value={tags}
                                                 onChange={({ target }) => {
-                                                    setTags(target.value)
+                                                    setTags(target.value.trim().split(','))
                                                 }}
                                             />
                                         </DialogContent>
