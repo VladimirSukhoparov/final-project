@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { Link , useParams} from 'react-router-dom'
 
 import ModalContext from '../../contexts/modalContext'
 
@@ -18,6 +18,12 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import ListItemText from '@mui/material/ListItemText'
 import CommentIcon from '@mui/icons-material/Comment'
 
+import DeleteIcon from '@mui/icons-material/Delete'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
+import { Button } from '@mui/material'
+
 import dayjs from 'dayjs'
 
 import style from './index.module.css'
@@ -29,7 +35,8 @@ const divStyle = {
     fontSize: '16px',
 }
 
-export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
+export const Card = ({ changeList, itemPost, isInFavorites, setFavorites, user }) => {
+    
     const api= useApi()
     const [newLike, setNewLike] = useState(itemPost.likes.length)
     const {setModalState} = useContext(ModalContext)
@@ -71,6 +78,36 @@ export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
             })
     }
 
+    const handleClick = () => {
+        api.deletePost(itemPost._id)
+            .then((data) => {
+                changeList((prevState) => {
+                    return prevState.filter((item) => item._id !== itemPost._id)
+                })
+                
+                {
+                    handleClose
+                }
+            })
+            .catch(() =>
+                setModalState(() => {
+                    return {
+                        isOpen: true,
+                        msg: 'Не удалось удалить пост',
+                    }
+                })
+            )
+    }
+
+    const [open, setOpen] = useState(false)
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+    
     return (
         <CardMUI sx={{ width: 350, margin: 3 }}>
             <div className={style.card}>
@@ -104,7 +141,23 @@ export const Card = ({ itemPost, isInFavorites, setFavorites }) => {
                 <div className={style.footer}>
                     <ListItem>
                         <ListItemText secondary={dayjs(itemPost.created_at).format('DD.MM.YYYY')} sx={{ ml: 1 }} />
-                        {itemPost.comments.length > 0 && (
+                        
+
+                        {itemPost.author._id == user && <DeleteIcon onClick={handleClickOpen} sx={{ mr: 15, cursor: 'pointer' }} color="disabled" />}
+
+                                    <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
+                                        <DialogTitle id='alert-dialog-title'>Вы действительно хотите удалить свой пост? </DialogTitle>
+
+                                        <DialogActions>
+                                            <Button onClick={handleClose}>Отмена</Button>
+                                                
+                                            <Button  onClick={handleClick}>
+                                                Удалить
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+
+                                    {itemPost.comments.length > 0 && (
                             <>
                                 <CommentIcon fontSize='small' sx={{ ml: 1 }} color='disabled' />
                                 <ListItemText secondary={itemPost.comments.length} />

@@ -24,7 +24,8 @@ import dayjs from 'dayjs'
 import style from './index.module.css'
 
 
-export const Post = ({ user }, { changeList }) => {
+export const Post = ({ user }) => {
+    
     const api = useApi()
     const { setModalState } = useContext(ModalContext)
     const [item, setItem] = useState(null)
@@ -37,25 +38,7 @@ export const Post = ({ user }, { changeList }) => {
     const [text, setText] = useState('')
     const [tags, setTags] = useState('')
 
-    const handleClick = () => {
-        api.deletePost(params.itemID)
-            .then((data) => {
-                changeList((prevState) => {
-                    return prevState.filter((item) => item._id !== params.itemID)
-                })
-                {
-                    handleClose
-                }
-            })
-            .catch(() =>
-                setModalState(() => {
-                    return {
-                        isOpen: true,
-                        msg: 'Не удалось удалить пост',
-                    }
-                })
-            )
-    }
+    
 
     const handleClickDelCom = () => {
         api.deleteComments(params.itemID, commentID)
@@ -124,17 +107,11 @@ export const Post = ({ user }, { changeList }) => {
             )
     }, [])
 
-    const [open, setOpen] = useState(false)
+    
     const [openEdit, setOpenEdit] = useState(false)
     const [openComment, setOpenComment] = useState(false)
 
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-
-    const handleClose = () => {
-        setOpen(false)
-    }
+    
 
     const handleClickOpenEdit = () => {
         setOpenEdit(true)
@@ -214,7 +191,7 @@ export const Post = ({ user }, { changeList }) => {
                                 <ListItem>
                                     {item.author._id == user && <EditIcon onClick={handleClickOpenEdit} sx={{ ml: 1, mr: 1, cursor: 'pointer' }} />}
 
-                                    <Dialog open={openEdit} onClose={handleClose}>
+                                    <Dialog open={openEdit} onClose={handleCloseEdit}>
                                         <DialogTitle>Редактирование поста</DialogTitle>
                                         <DialogContent>
                                             <DialogContentText>Заполните все поля</DialogContentText>
@@ -270,20 +247,7 @@ export const Post = ({ user }, { changeList }) => {
                                         </DialogActions>
                                     </Dialog>
 
-                                    {item.author._id == user && <DeleteIcon fontSize='small' onClick={handleClickOpen} sx={{ ml: 1, mr: 1, cursor: 'pointer' }} />}
-
-                                    <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
-                                        <DialogTitle id='alert-dialog-title'>Вы действительно хотите удалить свой пост? </DialogTitle>
-
-                                        <DialogActions>
-                                            <Button onClick={handleClose}>Отмена</Button>
-
-                                            <Button onClick={handleClick} href='/'>
-                                                Удалить
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-
+                                    
                                     <Typography gutterBottom variant='body2' component='div' sx={{ ml: 1, mr: 1 }}>
                                         {item.tags.map((item, i) => (
                                             <span key={i} className={style.tags}>
@@ -334,7 +298,7 @@ export const Post = ({ user }, { changeList }) => {
 
                                             <DialogActions>
                                                 <Button onClick={handleCloseComment}>Отмена</Button>
-
+                                                
                                                 <Button onClick={handleClickDelCom}>Удалить</Button>
                                             </DialogActions>
                                         </Dialog>

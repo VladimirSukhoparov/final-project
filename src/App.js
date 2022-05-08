@@ -105,12 +105,12 @@ export const App = () => {
                             path='/'
                             element={
                                 <>
-                                    <List list={currentPosts} favorites={favorites} setFavorites={setFavorites} />
+                                    <List user={user?._id} changeList={setPostList}  list={currentPosts} favorites={favorites} setFavorites={setFavorites} />
                                     <PaginationRounded postsPerPage={postsPerPage} totalPosts={postList.length} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                                 </>
                             }
                         />
-                        <Route path='posts/:itemID' element={<Post user={user?._id} changeList={setPostList} />} />
+                        <Route path='posts/:itemID' element={<Post user={user?._id}  />} />
                     </Routes>
                 </div>
                 <Footer />
