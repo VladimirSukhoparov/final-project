@@ -55,12 +55,14 @@ export const InfoUser = ({token}) => {
 
     const exitUser =()=>{
         localStorage.setItem('token', '');
+        
         setModalFormState(()=>{
             return{
                 isOpen: true,
                 msg: 'Вы не авторизированы',
             }
         })
+        setUser(null)
         
     }
 

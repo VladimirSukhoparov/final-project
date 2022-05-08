@@ -50,7 +50,7 @@ export const CustomizedButton = ({ changeList }) => {
         tags: inputTags.value.trim().split(","),
       })
       .then((data) => {
-        changeList((prevState) => [...prevState, data]);
+        changeList((prevState) => [data, ...prevState]);
         {
           handleClose;
         }
