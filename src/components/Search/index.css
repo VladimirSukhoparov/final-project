@@ -14,12 +14,12 @@
 	color: #000;
 	font-size: 16px;
 	line-height: 20px;
-	caret-color: #0000ff;
+	caret-color: #000000;
 	margin-bottom: 0px;
 }
 .search__input:focus {
 	background: #FFFFFF;
-	border: 1px solid #0000ff;
+	border: 1px solid #86e8fc;
 }
 
 .search__input::placeholder {
