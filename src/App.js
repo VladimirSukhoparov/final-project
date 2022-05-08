@@ -88,7 +88,7 @@ export const App = () => {
             <div className='appContainer'>
                 <Header>
                     <Logo />
-                    <Search setPostList={setPostList} />
+                    <Search setPostList={setPostList} token={token}/>
                     <InfoUser token={token}/>
                     <HeaderLinks />
                 </Header>

@@ -9,7 +9,7 @@ export const Search = ({ setPostList, token }) => {
 
     useEffect(() => {
         if(token){
-        api.getPost()
+        api.getPosts()
             .then((list) => setPostList(list.filter((item) => item.title.toLowerCase().includes(searchText.toLowerCase()))))
             .catch((err) => alert(err))}
     }, [searchText])
