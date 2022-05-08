@@ -58,7 +58,13 @@ export const App = () => {
     useEffect(() => {
       if(token){
         api.getPosts()
-            .then((list) => setPostList(list))
+            .then((list) => {
+                const listFinal=[];
+            for (let i=list.length-1; i>=0; i--){
+                listFinal.push(list[i])
+            }
+        setPostList(listFinal)}
+            )
             .catch((err) => alert(err))}
     }, [user])
 
