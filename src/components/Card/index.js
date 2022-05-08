@@ -141,14 +141,9 @@ export const Card = ({ changeList, itemPost, isInFavorites, setFavorites, user }
                 <div className={style.footer}>
                     <ListItem>
                         <ListItemText secondary={dayjs(itemPost.created_at).format('DD.MM.YYYY')} sx={{ ml: 1 }} />
-                        {itemPost.comments.length > 0 && (
-                            <>
-                                <CommentIcon fontSize='small' sx={{ ml: 1 }} color='disabled' />
-                                <ListItemText secondary={itemPost.comments.length} />
-                            </>
-                        )}
+                        
 
-                        {itemPost.author._id == user && <DeleteIcon fontSize='small' onClick={handleClickOpen} sx={{ ml: 1, mr: 1, cursor: 'pointer' }} />}
+                        {itemPost.author._id == user && <DeleteIcon onClick={handleClickOpen} sx={{ mr: 15, cursor: 'pointer' }} color="disabled" />}
 
                                     <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
                                         <DialogTitle id='alert-dialog-title'>Вы действительно хотите удалить свой пост? </DialogTitle>
@@ -161,6 +156,13 @@ export const Card = ({ changeList, itemPost, isInFavorites, setFavorites, user }
                                             </Button>
                                         </DialogActions>
                                     </Dialog>
+
+                                    {itemPost.comments.length > 0 && (
+                            <>
+                                <CommentIcon fontSize='small' sx={{ ml: 1 }} color='disabled' />
+                                <ListItemText secondary={itemPost.comments.length} />
+                            </>
+                        )}
 
                         {isInFavorites ? (
                             <IconButton aria-label='add to favorites' onClick={removeFavorite}>
