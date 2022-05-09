@@ -18,7 +18,7 @@
 	margin-bottom: 0px;
 }
 .search__input:focus {
-	background: #FFFFFF;
+	background: white ;
 	border: 1px solid #86e8fc;
 }
 

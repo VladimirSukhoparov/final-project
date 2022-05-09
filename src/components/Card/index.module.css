@@ -4,8 +4,8 @@
 	flex-direction: column;
 	align-items: flex-start;
 	padding: 0px;
-	border-radius: 10px;
-	border: 1px solid #f0f0f0;
+	border-radius: 5px;
+	border: 1px solid #86e8fc;
 
     justify-content: space-between;
   width: 350px;
@@ -14,14 +14,14 @@
 
 .tags{
 	box-sizing: border-box;
-    background-color: #ffc0e5;
+    background-color: #86e8fc;
     color: black;
     font-size: 14px;
     display: inline-block;
     margin-right: 5px;
     padding: 0 5px;
     font-size: 15px;
-    border: 1px solid #f04040;
+    border: 1px solid gray;
     border-radius: 50px;
   
 }
