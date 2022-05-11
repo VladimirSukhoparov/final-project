@@ -65,14 +65,28 @@ export const App = () => {
             }
         setPostList(listFinal)}
             )
-            .catch((err) => alert(err))}
+            .catch((err) => {
+                setModalState(()=>{
+                    return{
+                        isOpen: true,
+                        msg: err,
+                    }
+                })
+            })}
     }, [user])
 
     useEffect(() => {
         if(token){
               api.getInfoUser()
             .then((user) => setUser(user))
-            .catch((err) => alert(err))}
+            .catch((err) => {
+                setModalState(()=>{
+                    return{
+                        isOpen: true,
+                        msg: err,
+                    }
+                })
+            })}
 
     }, [])
 
@@ -95,7 +109,7 @@ export const App = () => {
                 <Header>
                     <Logo />
                     <Search setPostList={setPostList} token={token}/>
-                    <InfoUser token={token}/>
+                    <InfoUser token={token} setPostList={setPostList}/>
                     <HeaderLinks />
                 </Header>
 
@@ -105,7 +119,7 @@ export const App = () => {
                             path='/'
                             element={
                                 <>
-                                    <List user={user?._id} changeList={setPostList}  list={currentPosts} favorites={favorites} setFavorites={setFavorites} />
+                                    <List user={user?._id} changeList={setPostList}  list={currentPosts} favorites={favorites} setFavorites={setFavorites} token={token}/>
                                     <PaginationRounded postsPerPage={postsPerPage} totalPosts={postList.length} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                                 </>
                             }
