@@ -14,36 +14,30 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import FormModalContext from '../../contexts/formModalContext'
-import { styled } from "@mui/material/styles";
+import { styled } from '@mui/material/styles'
 
-import { pink, blue } from "@mui/material/colors";
+import { pink, blue } from '@mui/material/colors'
 
 const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText(pink[800]),
     backgroundColor: pink[300],
-    "&:hover": {
-      backgroundColor: blue[300],
-      
+    '&:hover': {
+        backgroundColor: blue[300],
     },
-  }));
+}))
 
-
-export const InfoUser = ({token, setPostList}) => {
+export const InfoUser = ({ token, setPostList }) => {
     const { modalFormState, setModalFormState } = useContext(FormModalContext)
-    const api=useApi()
+    const api = useApi()
     const { user, setUser } = useContext(UserContext)
-    const {setModalState} = useContext(ModalContext)
+    const { setModalState } = useContext(ModalContext)
     const [userName, setUserName] = useState('')
     const [userAbout, setUserAbout] = useState('')
     const [userAvatar, setUserAvatar] = useState('')
 
-      
-
-    useEffect(()=>{
-        user && setUserName(user.name),
-        user && setUserAbout(user.about),
-        user && setUserAvatar(user.avatar)
-    },[])
+    useEffect(() => {
+        user && setUserName(user.name), user && setUserAbout(user.about), user && setUserAvatar(user.avatar)
+    }, [user])
 
     const [open, setOpen] = useState(false)
 
@@ -55,74 +49,99 @@ export const InfoUser = ({token, setPostList}) => {
         setOpen(false)
     }
 
-    const exitUser =()=>{
-        localStorage.setItem('token', '');
-        
-        setModalFormState(()=>{
-            return{
+    const exitUser = () => {
+        localStorage.setItem('token', '')
+
+        setModalFormState(() => {
+            return {
                 isOpen: true,
                 msg: 'Вы не авторизированы',
             }
         })
-        setUser([])
+        setUser(null)
         setPostList([])
-        
-        
     }
 
-
-    const handleClick =()=>{
-        api.editCurentUser({name:userName,
-            about:userAbout
-        }).then((data)=>{
-            setUser(data);
-          
-        })
-        .catch(()=>
-        setModalState(()=>{
-            return {
-                isOpen: true,
-                msg: 'Не удалось редактировать информацию о пользователе'
-            }
-        }));
-        api.editAvatarUser({avatar:userAvatar})
-        .then((data)=>{
-           setUser(data)
-        })
-        .catch(()=>
-        setModalState(()=>{
-            return {
-                isOpen: true,
-                msg: 'Не удалось обновить аватар'
-            }
-        }) );
-        handleClose();
+    const handleClick = () => {
+        api.editCurentUser({ name: userName, about: userAbout })
+            .then((data) => {
+                setUser(data)
+            })
+            .catch(() =>
+                setModalState(() => {
+                    return {
+                        isOpen: true,
+                        msg: 'Не удалось редактировать информацию о пользователе',
+                    }
+                })
+            )
+        api.editAvatarUser({ avatar: userAvatar })
+            .then((data) => {
+                setUser(data)
+            })
+            .catch(() =>
+                setModalState(() => {
+                    return {
+                        isOpen: true,
+                        msg: 'Не удалось обновить аватар',
+                    }
+                })
+            )
+        handleClose()
     }
 
     return (
         <div>
             <Stack direction='row' spacing={1}>
-            
-                <Chip avatar={<Avatar alt='picture' src={user?.avatar} />} label={user?.name +', '+ user?.about} variant='outlined' onClick={handleClickOpen}/>
+                {user?.name && <Chip avatar={<Avatar alt='picture' src={user?.avatar} />} label={user?.name + ', ' + user?.about} variant='outlined' onClick={handleClickOpen} />}
 
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>Редактировать данные пользователя</DialogTitle>
                     <DialogContent>
                         <DialogContentText>Заполните все поля</DialogContentText>
-                        <TextField margin='dense' name='inputAvatar' label='URL картинки' fullWidth variant='standard' value={userAvatar} onChange={({target})=>{setUserAvatar(target.value)}}/>
-                        <TextField margin='dense' name='inputName' label='Имя' fullWidth variant='standard' value={userName} onChange={({target})=>{setUserName(target.value)}}/>
-                        <TextField margin='dense' name='inputAbout' label='Дополнительная информация' fullWidth variant='standard' value={userAbout} onChange={({target})=>{setUserAbout(target.value)}}/>
+                        <TextField
+                            margin='dense'
+                            name='inputAvatar'
+                            label='URL картинки'
+                            fullWidth
+                            variant='standard'
+                            value={userAvatar}
+                            onChange={({ target }) => {
+                                setUserAvatar(target.value)
+                            }}
+                        />
+                        <TextField
+                            margin='dense'
+                            name='inputName'
+                            label='Имя'
+                            fullWidth
+                            variant='standard'
+                            value={userName}
+                            onChange={({ target }) => {
+                                setUserName(target.value)
+                            }}
+                        />
+                        <TextField
+                            margin='dense'
+                            name='inputAbout'
+                            label='Дополнительная информация'
+                            fullWidth
+                            variant='standard'
+                            value={userAbout}
+                            onChange={({ target }) => {
+                                setUserAbout(target.value)
+                            }}
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Отмена</Button>
-                        <Button  onClick={handleClick}>
-                            Сохранить
-                        </Button>
+                        <Button onClick={handleClick}>Сохранить</Button>
                     </DialogActions>
                 </Dialog>
-               
-                <ColorButton variant="contained" size='small' onClick={exitUser}>Выход</ColorButton>
-               
+
+                <ColorButton variant='contained' size='small' onClick={exitUser}>
+                    Выход
+                </ColorButton>
             </Stack>
         </div>
     )
