@@ -28,7 +28,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   }));
 
 
-export const InfoUser = ({token}) => {
+export const InfoUser = ({token, setPostList}) => {
     const { modalFormState, setModalFormState } = useContext(FormModalContext)
     const api=useApi()
     const { user, setUser } = useContext(UserContext)
@@ -37,11 +37,13 @@ export const InfoUser = ({token}) => {
     const [userAbout, setUserAbout] = useState('')
     const [userAvatar, setUserAvatar] = useState('')
 
+      
+
     useEffect(()=>{
         user && setUserName(user.name),
         user && setUserAbout(user.about),
         user && setUserAvatar(user.avatar)
-    },[user])
+    },[])
 
     const [open, setOpen] = useState(false)
 
@@ -62,7 +64,9 @@ export const InfoUser = ({token}) => {
                 msg: 'Вы не авторизированы',
             }
         })
-        setUser(null)
+        setUser([])
+        setPostList([])
+        
         
     }
 

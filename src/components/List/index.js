@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Card } from '../Card'
 import './index.css'
 import { useApi } from '../../hooks/useApi'
+import ModalContext from '../../contexts/modalContext'
 
-export const List = ({ list,changeList, favorites, setFavorites,user }) => {
+export const List = ({ list,changeList, favorites, setFavorites,user , token}) => {
+    const { setModalState } = useContext(ModalContext)
     const api=useApi()
     useEffect(() => {
+        if(token){
                   api.getPosts()
               .then((list) => {
                   const listFinal=[];
@@ -14,7 +17,14 @@ export const List = ({ list,changeList, favorites, setFavorites,user }) => {
               }
               changeList(listFinal)}
               )
-              .catch((err) => alert(err))
+              .catch((err) => {
+                setModalState(()=>{
+                    return{
+                        isOpen: true,
+                        msg: err,
+                    }
+                })
+              })}
       }, [])
     return (
         <div className='cards'>

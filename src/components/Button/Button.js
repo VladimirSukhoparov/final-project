@@ -55,7 +55,14 @@ export const CustomizedButton = ({ changeList }) => {
           handleClose;
         }
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        setModalState(()=>{
+          return{
+              isOpen: true,
+              msg: err,
+          }
+      })
+      });
   };
 
   const styleBtn = {

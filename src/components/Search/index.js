@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import './index.css'
 import { useApi } from '../../hooks/useApi'
+import ModalContext from '../../contexts/modalContext'
+
 
 export const Search = ({ setPostList, token }) => {
     const api = useApi()
     const [searchText, setSearchText] = useState('')
+    const { setModalState } = useContext(ModalContext)
 
     useEffect(() => {
         if (token) {
@@ -16,10 +19,18 @@ export const Search = ({ setPostList, token }) => {
                     }
                     setPostList(listFinal.filter((item) => item.title.toLowerCase().includes(searchText.toLowerCase())))
                 })
-                .catch((err) => alert(err))
+                .catch((err) => {
+                    setModalState(()=>{
+                        return{
+                            isOpen: true,
+                            msg: err,
+                        }
+                    })
+                })
         }
     }, [searchText])
 
+    
     return (
         <div className='search'>
             <input type='text' placeholder='Поиск по названию поста' className='search__input' onChange={(event) => setSearchText(event.target.value)} />
