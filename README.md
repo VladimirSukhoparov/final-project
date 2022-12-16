@@ -1,21 +1,23 @@
-# Небольшой сайт с постами
+# SPA with posts
+
+Registration/authorization is required when logging in to the site
 ![screenshot](./readme-assets/login.png)
-При входе на сайт требуется регистрация/авторизация
 
+After logging in, you can edit user information
 ![screenshot](./readme-assets/edit.png)
-После входа можно редактировать информацию о пользователе
 
+Window for creating a new post
 ![screenshot](./readme-assets/newPost.png)
-Окно создания нового поста
 
+Route to the post itself, where you can write/delete comments
 ![screenshot](./readme-assets/post.png)
-Route на сам пост, где можно писать/удалять комментарии
 
+Implemented a search by the name of the post
 ![screenshot](./readme-assets/search.png)
-Реализован поиск по названию поста
 
+Implemented pagination
 ![screenshot](./readme-assets/pagination.png)
-Реализована пагинация
+
 
 ***
 ### Install dependencies
